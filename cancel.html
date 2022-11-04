@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<?!= include('css'); ?>
+	<!--<link rel="stylesheet" href="css.css">-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+</head>
+
+<body>
+	<h1>事前予約キャンセル画面</h1>
+	<img class="logo" id=image src="********************">
+	<div class="cancel-background">
+		<div class="cancel-text">キャンセル内容</div>
+		<div class="cancel-data">
+			<div class="cancel-data-inbox">
+        <?!= cancelUsrData ?>
+			</div>
+		</div>
+	</div>
+	<div id="cancel">	<!-- 遷移時変更箇所 ここから -->
+    <p class="cancel-sentence">
+			キャンセル内容にお間違いなければ確定ボタンを押してください。
+		</p>
+		<div class="button-box">
+			<button class="btn cancel" onclick="returnEnter()">
+				もどる
+			</button>
+			<button class="btn cancel" onclick="migrateCanceled()">
+				確定
+			</button>
+		</div>
+    <p class="cancel-sentence cancel-sentence-under">
+			※キャンセル完了後の取り消しはできませんのでご注意ください。
+		</p>
+	</div>	<!-- 遷移時変更箇所 ここまで -->
+
+	<script>
+    function returnEnter(){
+        const usrId = <?= usrID ?>;
+        window.top.location.href = '<?= getAppUrl() ?>?req=enter&id='+usrId;
+    }
+    function migrateCanceled(){
+      const usrId = <?= usrID ?>;
+      google.script.run
+        .withSuccessHandler(function(result){
+          $('#cancel').html(result).show();
+          console.log(usrId,typeof userId);
+          console.log("Success",usrId)
+        })
+        .withFailureHandler(function(result){
+          console.log("Failure")
+        })
+        .getCanceledHtml(usrId);
+    }
+	</script>
+	<p>
+		お問い合わせ<br>
+		第72回島根大学大学祭実行委員会<br>
+		shimadai.fes[at]gmail.com
+	</p>
+  </body>
+</html>
